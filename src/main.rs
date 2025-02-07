@@ -14,6 +14,7 @@ use hyper_util;
 use hyper_util::server::conn::auto::Builder as AutoBuilder;
 use multihash_codetable::{Code, MultihashDigest};
 use tokio::net::TcpListener;
+use lazy_static::lazy_static;
 
 mod err;
 mod image;
