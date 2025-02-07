@@ -22,8 +22,11 @@ use image::process_image;
 use resolve::{resolve_identity, ResolvedIdentity};
 
 type Body = Full<Bytes>;
-
-const MAX_BLOB_SIZE: u64 = 64 * 1024 * 1024;
+lazy_static! {
+    static ref MAX_BLOB_SIZE: u64 = env::var("MAX_BLOB_SIZE")
+        .map(|h| h.parse().unwrap_or(64 * 1024 * 1024))
+        .unwrap_or(64 * 1024 * 1024);
+}
 
 #[derive(Clone)]
 // An Executor that uses the tokio runtime.

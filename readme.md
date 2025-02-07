@@ -16,9 +16,21 @@ Geranium is configured via environment variables. None are required:
 - `ONLY_JPEG`: Will only permit JPEGs from being generated. Defaults to false.
 - `MAX_WIDTH`: The maximum width of the image to resize to. Defaults to 1200.
 - `MAX_HEIGHT`: The maximum height of the image to resize to. Defaults to 1200.
+- `MAX_BLOB_SIZE`: The maximum size of the blob to fetch. Defaults to 64MB.
 
 ### Usage
 To start the server, run `cargo run`. The server will listen on the port specified by the `PORT` environment variable, or `3000` if not specified.
 
-### Building the Image
-docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/espeon/geranium/geranium:latest --push .
+### TODO (probably)
+- configuration prefixes (e.g. /profile/* to get 300x300 profile pics)
+- migrate to libvips instead of image
+- url signing (akamai-style HMAC)
+- configurable source image file size restrictions
+- monitoring
+- fallback images
+- etags
+- resize alg config
+- image adjustments (saturation/contrast/etc)
+- silly image filters
+- image rotation
+- padding

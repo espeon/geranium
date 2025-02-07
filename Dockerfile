@@ -1,6 +1,25 @@
-FROM rust:latest AS buildah
+FROM rust:latest AS chef
 
 RUN update-ca-certificates
+
+RUN cargo install cargo-chef
+
+# planner
+FROM chef AS planner
+
+COPY . .
+
+RUN cargo chef prepare --recipe-path recipe.json
+
+
+FROM chef AS cook
+
+COPY --from=planner recipe.json recipe.json
+
+RUN cargo chef cook --release --recipe-path recipe.json
+
+
+FROM cook AS buildah
 
 # Create appuser
 ENV USER=app
