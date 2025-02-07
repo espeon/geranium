@@ -29,7 +29,7 @@ COPY src ./src
 RUN cargo build --release
 
 # Runtime stage
-FROM gcr.io/distroless/cc
+FROM debian:slim
 
 WORKDIR /app
 
