@@ -19,3 +19,6 @@ Geranium is configured via environment variables. None are required:
 
 ### Usage
 To start the server, run `cargo run`. The server will listen on the port specified by the `PORT` environment variable, or `3000` if not specified.
+
+### Building the Image
+docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/espeon/geranium/geranium:latest --push .

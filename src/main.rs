@@ -48,6 +48,14 @@ async fn handle_request(
     cache: Arc<HybridCache<String, Vec<u8>>>,
 ) -> anyhow::Result<Response<Body>> {
     let path = req.uri().path().to_string();
+
+    if path == "/health" {
+        return Ok(Response::builder()
+            .status(StatusCode::OK)
+            .header("Content-Type", "application/json")
+            .body(Body::from(r#"{"status":"ok"}"#))
+            .unwrap());
+    }
     let segments: Vec<&str> = path.split('/').filter(|s| !s.is_empty()).collect();
 
     dbg!(&segments);
@@ -220,7 +228,12 @@ async fn build_cache() -> HybridCache<String, Vec<u8>> {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
-    let port = env::var("PORT").unwrap_or("0.0.0.0:3000".into());
+    let mut port = env::var("PORT").unwrap_or("0.0.0.0:3000".into());
+    // if the user just put the port, or colon then the port
+    if port.starts_with(':') || !port.contains(':') {
+        // add the ip to start, and negate duplicate colons
+        port = ("0.0.0.0:".to_string() + &port).replace("::", ":");
+    }
 
     let listener = TcpListener::bind(port).await?;
 
