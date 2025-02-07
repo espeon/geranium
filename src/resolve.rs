@@ -96,7 +96,7 @@ async fn get_did_doc(did: &str) -> Result<DidDocument, reqwest::Error> {
                 todo!("Error for domain in did:web is not valid");
             };
             let ident = parts[2];
-            let res = reqwest::get(format!("https://{}/.well_known/did.json", ident))
+            let res = reqwest::get(format!("https://{}/.well-known/did.json", ident))
                 .await?
                 .error_for_status()?
                 .json()

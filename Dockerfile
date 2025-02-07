@@ -1,6 +1,6 @@
 
 # Build stage
-FROM --platform=$BUILDPLATFORM rust:latest as builder
+FROM rust:latest as builder
 
 WORKDIR /app
 # Install build dependencies
