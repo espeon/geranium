@@ -9,6 +9,15 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid 6969 \
+    app
+
 # Copy the Cargo.toml and Cargo.lock files
 COPY Cargo.* ./
 
@@ -41,6 +50,8 @@ WORKDIR /app
 COPY --from=builder /app/target/release/geranium /app/geranium
 
 USER app:app
+
+EXPOSE 3000
 
 # Set the binary as the entrypoint
 ENTRYPOINT ["/app/geranium"]
