@@ -13,7 +13,7 @@ Geranium is configured via environment variables. None are required:
 - `CACHE_DIR`: The directory to store cached preprocessed images in. If empty, only memory will be used. Defaults to "./data/foyer".
 - `CACHE_SIZE`: The maximum size of the cache, by items. Defaults to 1024.
 - `JPEG_QUALITY`: The JPEG quality to use when compressing images. Defaults to 87.
-- `ONLY_JPEG`: Will only permit JPEGs from being generated. Defaults to false.
+- `ONLY_JPEG`: Will only generate JPEGs. Defaults to false.
 - `MAX_WIDTH`: The maximum width of the image to resize to. Defaults to 1200.
 - `MAX_HEIGHT`: The maximum height of the image to resize to. Defaults to 1200.
 - `MAX_BLOB_SIZE`: The maximum size of the blob to fetch. Defaults to 64MB.
