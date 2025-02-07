@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  geranium:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=0.0.0.0:3000
+      - CACHE_DIR=/data/foyer
+      - CACHE_SIZE=1024
+      - JPEG_QUALITY=87
+      - ONLY_JPEG=false
+      - MAX_WIDTH=1200
+      - MAX_HEIGHT=1200
+    volumes:
+      - geranium_cache:/data/foyer
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  geranium_cache:
+    driver: local

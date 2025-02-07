@@ -35,4 +35,4 @@ COPY --from=buildah /buildah/target/release/geranium ./
 # Use an unprivileged user.
 USER app:app
 
-CMD ["./app/geranium"]
+CMD ["/app/geranium"]
