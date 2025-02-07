@@ -4,9 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+reqwest = { version = "0", features = [
+    "json",
+    "rustls",
+], default_features = false }
 hyper = { version = "1.6", features = ["full"] }
 tokio = { version = "1", features = ["full"] }
-reqwest = { version = "0", features = ["json"] }
 image = "0.24.7"
 serde_json = "1.0"
 hyper-util = { version = "0.1.10", features = [
