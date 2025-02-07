@@ -1,6 +1,6 @@
 
 # Build stage
-FROM --platform=$BUILDPLATFORM rust:1.75-slim as builder
+FROM --platform=$BUILDPLATFORM rust:latest as builder
 
 WORKDIR /app
 # Install build dependencies
