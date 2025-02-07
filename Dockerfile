@@ -60,7 +60,7 @@ WORKDIR /buildah
 
 COPY ./ .
 
-RUN . ./target.sh && touch src/main.rs && cargo build --release --target $RUST_TARGET && cp target/$RUST_TARGET/release/geranium target/geranium
+RUN . ./target.sh && touch src/main.rs && echo "Building for $TARGET_ARCH" && cargo build --release --target $RUST_TARGET && cp target/$RUST_TARGET/release/geranium target/geranium
 
 FROM --platform=${TARGETARCH:-$BUILDPLATFORM} gcr.io/distroless/cc
 

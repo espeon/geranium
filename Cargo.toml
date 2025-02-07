@@ -4,10 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-reqwest = { version = "0", features = [
+reqwest = { version = "0.12", features = [
     "json",
-    "rustls",
-], default_features = false }
+    "http2",
+    "rustls-tls",
+], default-features = false }
 hyper = { version = "1.6", features = ["full"] }
 tokio = { version = "1", features = ["full"] }
 image = "0.24.7"
