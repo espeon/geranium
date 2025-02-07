@@ -29,12 +29,18 @@ COPY src ./src
 RUN cargo build --release
 
 # Runtime stage
-FROM --platform=$TARGETPLATFORM gcr.io/distroless/cc-debian12
+FROM gcr.io/distroless/cc
+
+# Import from builder.
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
 
 WORKDIR /app
 
 # Copy the built binary from the builder stage
 COPY --from=builder /app/target/release/geranium /app/geranium
+
+USER app:app
 
 # Set the binary as the entrypoint
 ENTRYPOINT ["/app/geranium"]

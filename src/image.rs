@@ -32,7 +32,7 @@ pub fn process_image(
 
     // only resize if necessary
     let processed_img = if img.height() > height || img.width() > width {
-        img.resize(width, height, image::imageops::FilterType::Gaussian)
+        img.resize(width, height, image::imageops::FilterType::Lanczos3)
     } else {
         img
     };
