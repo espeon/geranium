@@ -135,14 +135,14 @@ async fn handle_request(
         .await
     {
         Ok(hit) => {
-            let output_data = match process_image(&hit, &format, max_len) {
+            let (image,fmt) = match process_image(&hit, &format, max_len) {
                 Ok(data) => data,
                 Err(e) => return server_error(format!("Image processing failed: {}", e)),
             };
             Ok(Response::builder()
                 .status(StatusCode::OK)
-                .header("Content-Type", "image/".to_owned() + &format)
-                .body(Body::from(output_data))
+                .header("Content-Type", "image/".to_owned() + &fmt)
+                .body(Body::from(image))
                 .unwrap())
         }
         Err(e) => return server_error(e.to_string()),

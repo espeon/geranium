@@ -24,7 +24,7 @@ pub fn process_image(
     input: &[u8],
     format: &str,
     max_len: Option<u32>,
-) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+) -> Result<(Vec<u8>, String), image::ImageError> {
     let img = image::load_from_memory(input)?;
     let max_length = max_len.unwrap_or(max(*MAX_HEIGHT, *MAX_WIDTH));
 
@@ -38,12 +38,13 @@ pub fn process_image(
     };
 
     let mut output = Vec::with_capacity(input.len());
+    let format = get_image_format(format);
     processed_img.write_to(
         &mut std::io::Cursor::new(&mut output),
-        get_image_format(format),
+        format.clone()
     )?;
 
-    Ok(output)
+    Ok((output, get_string_from_image_format(format)))
 }
 
 #[inline]
@@ -70,5 +71,18 @@ fn get_image_format(format: &str) -> ImageOutputFormat {
         "webp" => ImageOutputFormat::WebP,
         "gif" => ImageOutputFormat::Gif,
         _ => ImageOutputFormat::Jpeg(*JPEG_QUALITY),
+    }
+}
+
+fn get_string_from_image_format(format: ImageOutputFormat) -> String {
+    match format {
+        ImageOutputFormat::Png => "png".to_string(),
+        ImageOutputFormat::Jpeg(_) => "jpeg".to_string(),
+        ImageOutputFormat::WebP => "webp".to_string(),
+        ImageOutputFormat::Gif => "gif".to_string(),
+        ImageOutputFormat::Bmp => "bmp".to_string(),
+        ImageOutputFormat::Ico => "ico".to_string(),
+        ImageOutputFormat::Tiff => "tiff".to_string(),
+        _ => "unknown".to_string()
     }
 }
