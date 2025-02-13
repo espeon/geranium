@@ -12,9 +12,9 @@ use hyper::service::service_fn;
 use hyper::{Request, Response, StatusCode};
 use hyper_util;
 use hyper_util::server::conn::auto::Builder as AutoBuilder;
+use lazy_static::lazy_static;
 use multihash_codetable::{Code, MultihashDigest};
 use tokio::net::TcpListener;
-use lazy_static::lazy_static;
 
 mod err;
 mod image;
@@ -57,6 +57,7 @@ async fn handle_request(
         return Ok(Response::builder()
             .status(StatusCode::OK)
             .header("Content-Type", "application/json")
+            .header("Access-Control-Allow-Origin", "*")
             .body(Body::from(r#"{"status":"ok"}"#))
             .unwrap());
     }
@@ -67,6 +68,7 @@ async fn handle_request(
     if segments.len() != 2 {
         return Ok(Response::builder()
             .status(StatusCode::BAD_REQUEST)
+            .header("Access-Control-Allow-Origin", "*")
             .body(Body::from("Invalid path. Use /<DID>/<CID>"))
             .unwrap());
     }
@@ -135,13 +137,14 @@ async fn handle_request(
         .await
     {
         Ok(hit) => {
-            let (image,fmt) = match process_image(&hit, &format, max_len) {
+            let (image, fmt) = match process_image(&hit, &format, max_len) {
                 Ok(data) => data,
                 Err(e) => return server_error(format!("Image processing failed: {}", e)),
             };
             Ok(Response::builder()
                 .status(StatusCode::OK)
                 .header("Content-Type", "image/".to_owned() + &fmt)
+                .header("Access-Control-Allow-Origin", "*")
                 .body(Body::from(image))
                 .unwrap())
         }
@@ -206,6 +209,7 @@ async fn fetch_blob(
 fn server_error(message: String) -> anyhow::Result<Response<Body>> {
     Ok(Response::builder()
         .status(StatusCode::INTERNAL_SERVER_ERROR)
+        .header("Access-Control-Allow-Origin", "*")
         .body(Body::from(message))
         .unwrap())
 }
